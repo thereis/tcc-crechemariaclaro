@@ -9,6 +9,7 @@ class Chat {
     try {
       if (message.length === 0) return;
 
+      UserStore.toggleWriting();
       await this.addUserMessage(message);
 
       let request = await fetch(
@@ -45,6 +46,9 @@ class Chat {
     try {
       let message = response.result.fulfillment.speech;
 
+      // Toggle chatbot writing
+      UserStore.toggleWriting();
+
       await firestore.collection("messages").add({
         time: new Date(),
         message,
@@ -61,7 +65,7 @@ class Chat {
       // Register the user
       localStorage.setItem("id", UserStore.id);
 
-      let messages = firestore
+      await firestore
         .collection("messages")
         .where("ref", "==", UserStore.id)
         .orderBy("time", "desc")

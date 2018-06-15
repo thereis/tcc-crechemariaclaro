@@ -1,38 +1,19 @@
 import React from "react";
-import * as Scroll from "react-scroll";
-import {
-  Link,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller
-} from "react-scroll";
+import { Element, animateScroll as scroll } from "react-scroll";
 
 /**
  * Application dependencies
  */
-import { firestore } from "./db";
 import { UserStore } from "./store";
 import { ChatService } from "./services/Chat";
-import _ from "lodash";
 
 /**
  * Visual dependencies
  */
-import { ChatFeed, Message } from "react-chat-ui";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input
-} from "reactstrap";
+import { ChatFeed } from "react-chat-ui";
+import { Container, Row, Col, Button, InputGroup, Input } from "reactstrap";
 
-import { observer, Observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 @observer
 class App extends React.Component {
@@ -40,7 +21,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      message: "",
+      message: localStorage.getItem("id") ? "" : "Olá",
       messages: UserStore.messages,
       ready: true
     };
@@ -85,7 +66,7 @@ class App extends React.Component {
               <Element>
                 <ChatFeed
                   messages={[...UserStore.orderedMessages]}
-                  isTyping={false}
+                  isTyping={UserStore.botWriting}
                   showSenderName
                   bubblesCentered={false}
                   bubbleStyles={{

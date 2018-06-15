@@ -1,6 +1,4 @@
 import { observable, action, computed, toJS } from "mobx";
-import _ from "lodash";
-import moment from "moment";
 
 class User {
   @observable
@@ -10,6 +8,12 @@ class User {
 
   @observable messages = [];
   @observable response = [];
+  @observable botWriting = false;
+
+  @action
+  toggleWriting() {
+    return (this.botWriting = !this.botWriting);
+  }
 
   @action
   generateUserId() {
